@@ -17,9 +17,17 @@ Parse, load, modify and rewrite Kicad (s-epression) files into a convenient tree
 
 ## Development
 
-After checking out the repo, run `bundle` to install dependencies. Then, run `rake spec` to run the tests.
+After checking out the repo, run `bundle` to install dependencies.
 
 To install this gem onto your local machine from local source code, run `rake install`.
+
+## Resources
+
+KiCad uses a version of the Cadence SPECCTRA Design Language, defined in https://cdn.hackaday.io/files/1666717130852064/specctra.pdf
+
+KiCad's documentation of this is at https://dev-docs.kicad.org/en/file-formats/sexpr-intro/
+
+A related Rust library that was not consulted while building this is https://github.com/adom-inc/kicad_lib/tree/main/kicad_sexpr
 
 ## Contributing
 
