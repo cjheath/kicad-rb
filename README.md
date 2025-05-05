@@ -4,18 +4,12 @@ Parse, load, modify and rewrite Kicad (s-epression) files into a convenient tree
 
 ## Installation
 
-    ```ruby
-    gem 'kicad'
-    ```
-
-or
-
     gem install kicad
 
 ## Usage
 
     $ irb -r kicad
-    irb(main):001> k = KiCad.load("my_file.kicad_lib").value
+    irb(main):001> k = KiCad.load("my_file.kicad_sym").value
     irb(main):001> k.children.filter{|c| c === KiCad::AST::Symbol}.map{|c| c.values[1]}
     ["BC107", "CD4046"]
     irb(main):001> puts k.emit
