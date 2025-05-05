@@ -1,6 +1,8 @@
 module KiCad
   module AST
     class Node
+      attr_reader :values, :children
+
       def initialize values, children
         @values = values
         @children = children
@@ -18,9 +20,9 @@ module KiCad
         case v
         when ::Symbol
           v.to_s
-        when ::String
+        when String
           v.inspect
-        when ::Float, ::Integer
+        when Float, Integer
           v.to_s
         else
           "Internal error"
