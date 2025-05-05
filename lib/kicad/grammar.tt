@@ -4,12 +4,14 @@ module KiCad
   grammar SExpr
     rule node
       '(' s values:( value s)+ nodes:(node s)* ')' s
-        &{|v| p "Accepted node #{v[2].elements[0].value.text_value}"; true}
       { def value
           klass_name = values.elements[0].value.value
           klass = KiCad::AST::Node
           if klass_name.is_a? String
-            klass = const_get('KiCad::AST::'+klass_name) rescue klass
+	    # See if we have a defined class for this node type
+	    klass_name.gsub!(/\A[a-z]|_[a-z]/) {|from| from[-1].upcase }
+	    klass_name = klass_name
+            klass = KiCad::AST.const_get(klass_name, false) rescue KiCad::AST::Node
           end
           klass.new values.elements.map(&:value).map(&:value),
                     nodes.elements.map(&:node).map(&:value)
@@ -23,7 +25,7 @@ module KiCad
 
     rule symbol
       [a-zA-Z_]+
-        { def value; text_value; end }
+        { def value; :"#{text_value}"; end }
     end
 
     rule string
