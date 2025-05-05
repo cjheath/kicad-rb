@@ -12,7 +12,7 @@ module KiCad
   end
 
   def self.load filename
-    self.parse File.read(filename)
+    self.parse File.read(filename, :encoding => 'iso-8859-1')
   end
 
   class Parser < KiCad::SExprParser

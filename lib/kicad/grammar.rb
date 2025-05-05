@@ -53,9 +53,8 @@ module KiCad
       def value
                klass_name = values.elements[0].value.value
                klass = KiCad::AST::Node
-               if klass_name.is_a? ::Symbol
-     	    # See if we have a defined class for this node type
-     	    klass_name = klass_name.to_s.gsub(/\A[a-z]|_[a-z]/) {|from| from[-1].upcase }
+               if klass_name.is_a? ::Symbol  # See if we have a defined class for this node type
+                 klass_name = klass_name.to_s.gsub(/\A[a-z]|_[a-z]/) {|from| from[-1].upcase }
                  klass = KiCad::AST.const_get(klass_name, false) rescue KiCad::AST::Node
                end
                klass.new values.elements.map(&:value).map(&:value),
@@ -258,10 +257,14 @@ module KiCad
     end
 
     module String1
+      def contents
+        elements[1]
+      end
+
     end
 
     module String2
-      def value; eval(text_value); end
+      def value; contents.text_value.force_encoding(Encoding::UTF_8); end
     end
 
     def _nt_string
