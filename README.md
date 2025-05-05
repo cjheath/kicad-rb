@@ -16,7 +16,7 @@ or
 
     $ irb -r kicad
     irb(main):001> k = KiCad.load("my_file.kicad_lib").value
-    irb(main):001> k.children.filter{|c| c.values[0] == :symbol}.map{|c| c.values[1]}
+    irb(main):001> k.children.filter{|c| c === KiCad::AST::Symbol}.map{|c| c.values[1]}
     ["BC107", "CD4046"]
     irb(main):001> puts k.emit
     ...

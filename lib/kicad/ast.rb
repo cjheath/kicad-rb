@@ -37,6 +37,10 @@ module KiCad
     end
 
     # Uncomment or add whatever class you need to customise:
+
+    class Symbol < Node
+    end
+
 =begin
     class At < Node
     end
@@ -123,9 +127,6 @@ module KiCad
     end
 
     class Stroke < Node
-    end
-
-    class Symbol < Node
     end
 
     class Type < Node
