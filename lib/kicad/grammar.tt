@@ -3,7 +3,7 @@ require 'kicad/ast'
 module KiCad
   grammar SExpr
     rule node
-      '(' s values:( value s)+ nodes:(node s)* ')' s
+      s '(' s values:( value s)+ nodes:(node s)* ')' s
       { def value
           klass_name = values.elements[0].value.value
           klass = KiCad::AST::Node

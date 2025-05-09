@@ -33,19 +33,23 @@ module KiCad
 
     module Node2
       def s1
-        elements[1]
-      end
-
-      def values
-        elements[2]
-      end
-
-      def nodes
-        elements[3]
+        elements[0]
       end
 
       def s2
-        elements[5]
+        elements[2]
+      end
+
+      def values
+        elements[3]
+      end
+
+      def nodes
+        elements[4]
+      end
+
+      def s3
+        elements[6]
       end
     end
 
@@ -74,84 +78,88 @@ module KiCad
       end
 
       i0, s0 = index, []
-      if (match_len = has_terminal?('(', false, index))
-        r1 = true
-        @index += match_len
-      else
-        terminal_parse_failure('\'(\'')
-        r1 = nil
-      end
+      r1 = _nt_s
       s0 << r1
       if r1
-        r2 = _nt_s
+        if (match_len = has_terminal?('(', false, index))
+          r2 = true
+          @index += match_len
+        else
+          terminal_parse_failure('\'(\'')
+          r2 = nil
+        end
         s0 << r2
         if r2
-          s3, i3 = [], index
-          loop do
-            i4, s4 = index, []
-            r5 = _nt_value
-            s4 << r5
-            if r5
-              r6 = _nt_s
-              s4 << r6
-            end
-            if s4.last
-              r4 = instantiate_node(SyntaxNode,input, i4...index, s4)
-              r4.extend(Node0)
-            else
-              @index = i4
-              r4 = nil
-            end
-            if r4
-              s3 << r4
-            else
-              break
-            end
-          end
-          if s3.empty?
-            @index = i3
-            r3 = nil
-          else
-            r3 = instantiate_node(SyntaxNode,input, i3...index, s3)
-          end
+          r3 = _nt_s
           s0 << r3
           if r3
-            s7, i7 = [], index
+            s4, i4 = [], index
             loop do
-              i8, s8 = index, []
-              r9 = _nt_node
-              s8 << r9
-              if r9
-                r10 = _nt_s
-                s8 << r10
+              i5, s5 = index, []
+              r6 = _nt_value
+              s5 << r6
+              if r6
+                r7 = _nt_s
+                s5 << r7
               end
-              if s8.last
-                r8 = instantiate_node(SyntaxNode,input, i8...index, s8)
-                r8.extend(Node1)
+              if s5.last
+                r5 = instantiate_node(SyntaxNode,input, i5...index, s5)
+                r5.extend(Node0)
               else
-                @index = i8
-                r8 = nil
+                @index = i5
+                r5 = nil
               end
-              if r8
-                s7 << r8
+              if r5
+                s4 << r5
               else
                 break
               end
             end
-            r7 = instantiate_node(SyntaxNode,input, i7...index, s7)
-            s0 << r7
-            if r7
-              if (match_len = has_terminal?(')', false, index))
-                r11 = true
-                @index += match_len
-              else
-                terminal_parse_failure('\')\'')
-                r11 = nil
+            if s4.empty?
+              @index = i4
+              r4 = nil
+            else
+              r4 = instantiate_node(SyntaxNode,input, i4...index, s4)
+            end
+            s0 << r4
+            if r4
+              s8, i8 = [], index
+              loop do
+                i9, s9 = index, []
+                r10 = _nt_node
+                s9 << r10
+                if r10
+                  r11 = _nt_s
+                  s9 << r11
+                end
+                if s9.last
+                  r9 = instantiate_node(SyntaxNode,input, i9...index, s9)
+                  r9.extend(Node1)
+                else
+                  @index = i9
+                  r9 = nil
+                end
+                if r9
+                  s8 << r9
+                else
+                  break
+                end
               end
-              s0 << r11
-              if r11
-                r12 = _nt_s
+              r8 = instantiate_node(SyntaxNode,input, i8...index, s8)
+              s0 << r8
+              if r8
+                if (match_len = has_terminal?(')', false, index))
+                  r12 = true
+                  @index += match_len
+                else
+                  terminal_parse_failure('\')\'')
+                  r12 = nil
+                end
                 s0 << r12
+                if r12
+                  r13 = _nt_s
+                  s0 << r13
+                end
               end
             end
           end
