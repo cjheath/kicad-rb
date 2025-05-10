@@ -192,16 +192,12 @@ module KiCad
       # Set or clear (hide) on the property_node
       def hide=(h = true)
         v = (h ? :yes : :no)
-        if !effects
-          # puts "No effects yet"
+        if !effects                     # No effects yet
           prop = KiCad.parse(%Q{(effects(hide #{v}))})&.value
           @children.append(prop) if prop
-        elsif (existing = effects.hide)
-          # puts "Effects and hide already"
+        elsif (existing = effects.hide) # Effects and hide already
           existing.hide = v
-        else
-          # Create new (hide) node:
-          # puts "Effects but no hide"
+        else                            # Create new (hide) node
           prop = KiCad.parse(%Q{(hide #{v})})&.value
           @children.append(prop) if prop
         end
@@ -347,19 +343,19 @@ module KiCad
       end
 
       def []=(k, v)
-        puts "Setting property #{k} to #{v.inspect}"
-        if (p = property_node)
-          p.send(:"#{self.class.to_symbol k}=", v)
+        # puts "Setting property #{k} to #{v.inspect}"
+        if (prop = property_node(k))
+          prop.value = v
         else  # Create new Property using the parser:
           prop = KiCad.parse(%Q{
             (property "#{k}" #{String === v ? v.inspect : v.to_s}
               (at 0 0 0)
-              (effects(font(size 1.27 1.27)))
-              (hide yes)
+              (effects(font(size 1.27 1.27)) (hide yes))
             )
           })&.value
           @children.append(prop) if prop
         end
+        prop
       end
     end
 
