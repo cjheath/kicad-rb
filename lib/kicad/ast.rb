@@ -16,6 +16,19 @@ module KiCad
         ")\n"
       end
 
+      # A replacement for a Node#emit that wants descendents compacted
+      def emit_compacting depth = 0
+        "\t"*depth + emit_compact + "\n"
+      end
+
+      def emit_compact
+        '(' +
+        [ @values.map{|v| String === v ? v.inspect : v.to_s },
+          @children.map{|c| c.emit_compact() }
+        ].flatten*' ' +
+        ')'
+      end
+
       # Define setter and getter methods for each value type this class allows
       def self.value_types vts
         i = 1   # @values[0] is always the class symbol
@@ -87,12 +100,21 @@ module KiCad
     end
 
     class Generator < Node
+      def emit depth = 0
+        emit_compacting depth
+      end
     end
 
     class GeneratorVersion < Node
+      def emit depth = 0
+        emit_compacting depth
+      end
     end
 
     class Version < Node
+      def emit depth = 0
+        emit_compacting depth
+      end
     end
 
     # Uncomment or add whatever class you need to customise:
@@ -100,6 +122,10 @@ module KiCad
     # Position Identifier
     class At < Node
       value_types :x => Float, :y => Float, :angle => Float
+
+      def emit depth = 0
+        emit_compacting depth
+      end
     end
 
     # Coordinate Point List
@@ -115,6 +141,10 @@ module KiCad
     # Stroke Definition
     class Stroke < Node
       child_types :width, :type, :color
+
+      def emit depth = 0
+        emit_compacting depth
+      end
     end
 
     class Width < Node
@@ -132,10 +162,26 @@ module KiCad
     # Text Effects
     class Effects < Node
       child_types :font, :justify, :hide
+
+      def emit depth = 0
+        if @children.size <= 1
+          emit_compacting depth
+        else
+          super
+        end
+      end
     end
 
     class Font < Node
       child_types :face, :size, :thickness, :bold, :italic, :line_spacing
+
+      def emit depth = 0
+        if @children.size <= 1
+          emit_compacting depth
+        else
+          super
+        end
+      end
     end
 
     class Face < Node
@@ -232,6 +278,11 @@ module KiCad
 
     class Fill < Node
       value_types :fill => [:no, :yes]
+      child_types :type
+
+      def emit depth = 0
+        emit_compacting depth
+      end
     end
 
     class Arc < Node
@@ -366,10 +417,18 @@ module KiCad
     class PinNumbers < Node
       # This is a child node, not as documented (a value in https://dev-docs.kicad.org/en/file-formats/sexpr-intro/)
       child_types :hide
+
+      def emit depth = 0
+        emit_compacting depth
+      end
     end
 
     class PinNames < Node
       child_types :offset, :hide
+
+      def emit depth = 0
+        emit_compacting depth
+      end
     end
 
     class InBom < Node
