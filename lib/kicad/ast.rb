@@ -190,7 +190,7 @@ module KiCad
       child_types :at, :effects
 
       # Set or clear (hide) on the property_node
-      def hide=(h = true)
+      def hidden=(h = true)
         v = (h ? :yes : :no)
         if !effects                     # No effects yet
           prop = KiCad.parse(%Q{(effects(hide #{v}))})&.value
@@ -364,12 +364,12 @@ module KiCad
     end
 
     class PinNumbers < Node
-      value_types :hide => [:no, :yes]
+      # This is a child node, not as documented (a value in https://dev-docs.kicad.org/en/file-formats/sexpr-intro/)
+      child_types :hide
     end
 
     class PinNames < Node
-      child_types :offset
-      value_types :hide => [:no, :yes]
+      child_types :offset, :hide
     end
 
     class InBom < Node

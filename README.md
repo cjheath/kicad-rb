@@ -1,6 +1,6 @@
 # KiCad
 
-Parse, load, modify and rewrite Kicad (s-epression) files into a convenient tree structure for scripting
+Parse, load, modify and rewrite Kicad (s-expression) files into a convenient tree structure for scripting
 
 ## Installation
 
@@ -17,7 +17,7 @@ For all parts with no PartNumber property, copy it from the Value field and make
     ...
     irb(main):002> k.all_symbol.each{|s| s['PartNumber'] = s.property('Value') unless s.property('PartNumber') }; nil
     => nil
-    irb(main):003> k.all_symbol.each{|s| s.property_node('PartNumber')&.hide = true }
+    irb(main):003> k.all_symbol.each{|s| s.property_node('PartNumber')&.hidden = true }
     => nil
     irb(main):001> File.open("rewrite.kicad_sym", "w") { |f| f.puts k.emit }
     ...
