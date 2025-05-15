@@ -13,13 +13,19 @@ symbols_by_pretty = {}
 k.all_symbol.
   each do |s|
     child_symbols = s.all_symbol
+    next if child_symbols.empty?
 
-    # the key is the concatenated pretty-printed contents of all child symbols
+    # the key is the concatenated pretty-printed contents of all child symbols excluding their names
     key =
       child_symbols.map do |c|
         s['Reference'].inspect+':' +
-        c.children.filter{|e| KiCad::AST::Property === e}.map(&:emit).sort*" "
-      end.sort*"\n"
+        c.children.
+          filter{|e| !(KiCad::AST::Property === e)}.
+          map(&:emit_compact).
+          sort*" "
+      end.sort*" "
+
+    puts "#{s.id} key is #{key}"
 
     existing = symbols_by_pretty[key]
     if existing
